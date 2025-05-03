@@ -1,0 +1,95 @@
+{% extends 'chatpot/base.html' %}
+
+{% block title %}Upload Policies{% endblock %}
+
+{% block content %}
+<div class="upload-container">
+    <div class="upload-box">
+        <h2>Upload Policy Documents</h2>
+
+        {% if message %}
+            <div style="padding: 10px; margin-bottom: 20px; border-radius: 6px;
+                        {% if success %}
+                            background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+                        {% else %}
+                            background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+                        {% endif %}">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_zip_file">Select a ZIP file</label>
+                {{ form.zip_file }}
+            </div>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+
+
+<style>
+    .upload-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        background-color: #f9f9f9;
+        min-height: 80vh;
+    }
+
+    .upload-box {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .upload-box h2 {
+        margin-bottom: 25px;
+        font-size: 24px;
+        color: #333;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #444;
+    }
+
+    .form-group input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}

@@ -18,9 +18,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from chatpot import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    #path('admin/', admin.site.urls),
+    path('index', views.index, name='index'),   
+    path('ask/', views.ask_question, name='ask_question'),    
+    #path('login/', views.login_view, name='login'),
+    #path('dashboard/', views.dashboard, name='dashboard'),
+    #path('upload/', views.upload_zip, name='upload_zip'),
+
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('ask/', views.ask_question, name='ask_question'),
+    path('login/', auth_views.LoginView.as_view(template_name='chatpot\login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('', views.dashboard, name='dashboard'),
+    path('upload/', views.upload_zip, name='upload_zip'),
+    path('test/', views.dashboardTest, name='test'),
 ]

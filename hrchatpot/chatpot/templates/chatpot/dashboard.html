@@ -1,0 +1,39 @@
+{% extends 'chatpot/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    .welcome-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60vh;
+        text-align: center;
+    }
+
+    .welcome-message {
+        font-size: 26px;
+        background: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #333;
+        line-height: 1.6;
+        max-width: 800px;
+    }
+
+    .highlight {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+</style>
+
+<div class="welcome-container">
+    <div class="welcome-message">
+        Hi <span class="highlight">{{ request.user.username }}</span> from 
+        <span class="highlight">{{ request.user.role }}</span> Department,<br>
+        Welcome to the AI driven HR Assistant Chatbot.
+    </div>
+</div>
+{% endblock %}

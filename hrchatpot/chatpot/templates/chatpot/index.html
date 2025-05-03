@@ -1,101 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HR Chatbot</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
+{% extends "chatpot/base.html" %}
 
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      max-width: 600px;
-      margin: auto;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      overflow: hidden;
-    }
+{% block title %}HR Chatbot{% endblock %}
 
-    .chat-window {
-      flex-grow: 1;
-      padding: 20px;
-      overflow-y: auto;
-      scroll-behavior: smooth;
-    }
-
-    .message {
-      margin: 10px 0;
-      max-width: 80%;
-      padding: 12px 16px;
-      border-radius: 20px;
-      line-height: 1.4;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .user {
-      align-self: flex-end;
-      background-color: #DCF8C6;
-    }
-
-    .bot {
-      align-self: flex-start;
-      background-color: #F1F0F0;
-    }
-
-    .typing {
-      font-style: italic;
-      opacity: 0.6;
-    }
-
-    .chat-form {
-      display: flex;
-      padding: 10px;
-      background-color: #fff;
-      border-top: 1px solid #eee;
-    }
-
-    .chat-form input[type="text"] {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      outline: none;
-    }
-
-    .chat-form button {
-      margin-left: 10px;
-      padding: 10px 20px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .chat-form button:hover {
-      background-color: #45a049;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
+{% block content %}
 <div class="chat-container">
   <div id="chat-window" class="chat-window"></div>
 
@@ -105,6 +12,88 @@
     <button type="submit">Send</button>
   </form>
 </div>
+
+<style>
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 80vh;
+  }
+
+  .chat-window {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+
+  .message {
+    margin: 10px 0;
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 20px;
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .user {
+    align-self: flex-end;
+    background-color: #DCF8C6;
+  }
+
+  .bot {
+    align-self: flex-start;
+    background-color: #F1F0F0;
+  }
+
+  .typing {
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  .chat-form {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+  }
+
+  .chat-form input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+  }
+
+  .chat-form button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .chat-form button:hover {
+    background-color: #45a049;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 
 <script>
   const form = document.getElementById('chat-form');
@@ -117,16 +106,13 @@
     const question = input.value.trim();
     if (!question) return;
 
-    // Clear input and scroll down
     input.value = "";
 
-    // Add user's question
     const userMsg = document.createElement("div");
     userMsg.className = "message user";
     userMsg.textContent = question;
     chatWindow.appendChild(userMsg);
 
-    // Show bot typing
     const typingMsg = document.createElement("div");
     typingMsg.id = "typing";
     typingMsg.className = "message bot typing";
@@ -134,7 +120,6 @@
     chatWindow.appendChild(typingMsg);
     chatWindow.scrollTop = chatWindow.scrollHeight;
 
-    // Send question to server
     fetch('/ask/', {
       method: 'POST',
       headers: {
@@ -145,7 +130,6 @@
     })
     .then(response => response.text())
     .then(html => {
-      // Parse the returned HTML to extract the new bot message
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, 'text/html');
       const botMessages = doc.querySelectorAll(".message.bot:not(.typing)");
@@ -166,5 +150,4 @@
     });
   });
 </script>
-</body>
-</html>
+{% endblock %}

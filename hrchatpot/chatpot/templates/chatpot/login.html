@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-container form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-container input {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .login-container button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .login-container button:hover {
+      background-color: #45a049;
+    }
+
+    .error-message {
+      background-color: #ffe6e6;
+      color: #cc0000;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #cc0000;
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>AI Driven HR Assistant</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="error-message">
+        {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <label for="{{ form.username.id_for_label }}">Username</label>
+      {{ form.username }}
+
+      <label for="{{ form.password.id_for_label }}">Password</label>
+      {{ form.password }}
+    {% endif %}
+
+    <button type="submit">{% if form.non_field_errors %}Try Again{% else %}Login{% endif %}</button>
+  </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<header class="p-3 bg-dark text-white">
+    <div class="row">
+        <div class="col">
+            <a class="text-light text-decoration-none" href="/blog"><h3>Blog</h3></a>
+        </div>
+        <div class="col">
+            <div class="d-flex justify-content-center gap-3">
+                <a class="text-light text-decoration-none"  href="{% url 'upload_zip' %}">Upload New Policies</a>
+                <a class="text-light text-decoration-none" href="{% url 'index' %}">Ask</a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link text-light">Logout</button>
+            </div>
+        </div>
+    </div>
+</header>
