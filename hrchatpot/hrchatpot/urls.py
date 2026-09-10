@@ -23,10 +23,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('index', views.index, name='index'),   
-    path('ask/', views.ask_question, name='ask_question'),    
-    #path('login/', views.login_view, name='login'),
-    #path('dashboard/', views.dashboard, name='dashboard'),
-    #path('upload/', views.upload_zip, name='upload_zip'),
+    path('ask/', views.ask_question, name='ask_question'),      
 
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='chatpot\login.html'), name='login'),

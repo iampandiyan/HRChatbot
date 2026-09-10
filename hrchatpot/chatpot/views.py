@@ -3,11 +3,26 @@ from chatpot.utils.query_engine import answer_query
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import ZipUploadForm
-from .utils.embedding_loader import process_policy_documents 
+from .utils.embedding_loader import process_policy_documents
 import os, zipfile
-from django.contrib.auth.decorators import login_required  
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 import shutil
+import markdown
+import bleach
+
+ALLOWED_ANSWER_TAGS = [
+    "p", "br", "strong", "em", "ul", "ol", "li",
+    "table", "thead", "tbody", "tr", "th", "td",
+    "h1", "h2", "h3", "h4", "blockquote", "code", "pre", "a",
+]
+ALLOWED_ANSWER_ATTRS = {"a": ["href", "title"]}
+
+
+def format_answer(answer):
+    """Render the LLM's markdown answer to sanitized HTML for display."""
+    html = markdown.markdown(answer, extensions=["tables"])
+    return bleach.clean(html, tags=ALLOWED_ANSWER_TAGS, attributes=ALLOWED_ANSWER_ATTRS)
 
 @login_required
 def index(request):
@@ -32,7 +47,7 @@ def ask_question(request):
         request.session.modified = True
 
         # Send back only the bot's message as a div
-        return HttpResponse(f'<div class="message bot">{answer}</div>')
+        return HttpResponse(f'<div class="message bot">{format_answer(answer)}</div>')
 
     return HttpResponse(status=405)
 

@@ -53,6 +53,31 @@
     background-color: #F1F0F0;
   }
 
+  .message p {
+    margin: 0 0 8px 0;
+  }
+
+  .message p:last-child {
+    margin-bottom: 0;
+  }
+
+  .message table {
+    border-collapse: collapse;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  .message th,
+  .message td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: left;
+  }
+
+  .message th {
+    background-color: #e2e2e2;
+  }
+
   .typing {
     font-style: italic;
     opacity: 0.6;
@@ -139,7 +164,7 @@
         botMessages.forEach(botMsg => {
           const msg = document.createElement("div");
           msg.className = "message bot";
-          msg.textContent = botMsg.textContent;
+          msg.innerHTML = botMsg.innerHTML;
           chatWindow.appendChild(msg);
           chatWindow.scrollTop = chatWindow.scrollHeight;
         });

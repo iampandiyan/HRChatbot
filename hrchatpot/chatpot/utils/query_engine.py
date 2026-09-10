@@ -14,21 +14,34 @@ def answer_query(query):
     # Create a retriever
     retriever = vectordb.as_retriever(search_kwargs={"k": 3})
 
-    # Set Mistral API configuration (replace with your actual key and endpoint)
-    mistral_api_key = os.getenv("MISTRAL_API_KEY")
-    mistral_base_url = "https://api.mistral.ai/v1"  # or your custom deployment
+    # Set Together AI configuration
+    together_api_key = os.getenv("TOGETHER_API_KEY")
+    together_base_url = "https://api.together.ai/v1"
 
-    # Use Mistral with LangChain (OpenAI-compatible interface)
+    # Use Together AI with LangChain (OpenAI-compatible interface)
+    # reasoning_effort="low" + explicit max_tokens keep gpt-oss's internal
+    # chain-of-thought from eating the whole token budget before it writes
+    # the final answer (that's why the previous reasoning model came back blank).
     llm = ChatOpenAI(
-        model="mistral-large-latest",
+        model="openai/gpt-oss-20b",
         temperature=0.3,
-        openai_api_base=mistral_base_url,
-        openai_api_key=mistral_api_key
+        max_tokens=512,
+        openai_api_base=together_base_url,
+        openai_api_key=together_api_key,
+        model_kwargs={"reasoning_effort": "low"}
     )
 
     # Build the QA chain
-    qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever)
-    
+    qa_chain = RetrievalQA.from_chain_type(llm=llm, retriever=retriever, return_source_documents=True)
+
     # Run the query
-    result = qa_chain.run(query)
+    response = qa_chain.invoke({"query": query})
+    result = response["result"]
+
+    print(f"Question: {query}")
+    print("Retrieved Chunks:")
+    for i, doc in enumerate(response["source_documents"], 1):
+        print(f"--- Chunk {i} ({doc.metadata.get('source', 'unknown')}) ---")
+        print(doc.page_content)
+
     return result

@@ -5,11 +5,9 @@
         </div>
         <div class="col">
             <div class="d-flex justify-content-center gap-3">
-                <a class="text-light text-decoration-none"  href="{% url 'upload_zip' %}">Upload New Policies</a>
-                <a class="text-light text-decoration-none" href="{% url 'index' %}">Ask</a>
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-link text-light">Logout</button>
+                <a class="text-light text-decoration-none" href="/blog">Home</a>
+                <a class="text-light text-decoration-none" href="/blog/about">About</a>
+                <a class="text-light text-decoration-none" href="/blog/contact">Contact</a>
             </div>
         </div>
     </div>
